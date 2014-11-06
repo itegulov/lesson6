@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RSS Feed</string>
+    <string name="ok_button">OK</string>
+    <string name="title_activity_content">Content</string>
+    <string name="title_activity_channel">Channels</string>
+    <string name="Add">add_button</string>
+    <string name="add_button">Add</string>
+
+</resources>

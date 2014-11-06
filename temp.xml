@@ -1,0 +1,37 @@
+<channel>
+    <title>Bash.im</title>
+    <link>http://bash.im/</link>
+    <description>Цитатник Рунета</description>
+    <language>ru</language>
+    <item>
+        <guid isPermaLink="false">...</guid>
+        <link>http://bash.im/quote/430596</link>
+        <title>Цитата #430596</title>
+        <pubDate>Fri, 17 Oct 2014 13:12:01 +0400</pubDate>
+        <description><![CDATA[Wut is that?]]></description>
+    </item>
+    <item>
+        <guid isPermaLink="false">
+            3f0c5bb9a2e008ff1ac1eeac0148950f5025d0767e23659bac671d8c87d06e52
+        </guid>
+        <link>http://bash.im/quote/430595</link>
+        <title>Цитата #430595</title>
+        <pubDate>Fri, 17 Oct 2014 12:46:01 +0400</pubDate>
+        <description><![CDATA[
+Drazd: Блин, коллега просто убил.<br>Drazd: Зашел к нам завхоз пересчитать рабочие места, а нас в нашем кабинете работает 14 человек.<br>Drazd: Когда он устал считать, спросил: &quot;Сколько здесь человек работает?&quot;<br>Drazd: Быстрее всех ответил тот самый коллега: &quot;Ну в среднем один человек&quot;
+]]></description>
+    </item>
+    <item>
+        <guid isPermaLink="false">
+            180399e3ca3e7cf01258d99b8f00a8b36679790994d260d038ddab2cf585fa57
+        </guid>
+        <link>http://bash.im/quote/430594</link>
+        <title>Цитата #430594</title>
+        <pubDate>Fri, 17 Oct 2014 12:13:01 +0400</pubDate>
+        <description>
+            <![CDATA[
+xxx: Кто-нибудь заказывал сборку писи в Регарде? Можно доверять?<br>yyy: Я сборку писи, родителям заказывал. Ничё так собрали, годную. Про то, какую в<br>Регарде писю собирают, лучше гуглить.
+]]>
+        </description>
+    </item>
+</channel>
