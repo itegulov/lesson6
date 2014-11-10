@@ -6,14 +6,10 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,8 +17,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 public class RssFeedSaxParser extends DefaultHandler {
-    private static final DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US);
-    private static final DateFormat secondDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
     public static final String LOG_TAG = RssFeedSaxParser.class.getSimpleName();
     private enum Tag {ITEM, DESCRIPTION, DATE, LINK, TITLE}
     private final static Map<String, Tag> NAME_TO_TAG;
@@ -144,16 +138,7 @@ public class RssFeedSaxParser extends DefaultHandler {
         } else if (bDescription) {
             rssItem.setDescription((rssItem.getDescription() == null ? "" : rssItem.getDescription()) + new String(ch, start, length));
         } else if (bDate) {
-            try {
-                rssItem.setDate(dateFormat.parse(new String(ch, start, length)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                try {
-                    rssItem.setDate(secondDateFormat.parse(new String(ch, start, length)));
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
-            }
+            rssItem.setDate(new String(ch, start, length));
         } else if (bLink) {
             rssItem.setLink(new String(ch, start, length));
         }

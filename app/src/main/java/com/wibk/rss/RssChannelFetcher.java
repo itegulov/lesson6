@@ -6,12 +6,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,10 +40,11 @@ public class RssChannelFetcher extends AsyncTask<String, Void, RssChannel> {
             String encoding = "utf-8";
             if (contentType.contains("charset=")) {
                 int index = contentType.indexOf("charset=") + "charset=".length();
-                int endIndex;
-                for (endIndex = index;
-                     endIndex < contentType.length() && contentType.charAt(endIndex) != ' ' &&
-                             contentType.charAt(endIndex) != ';'; endIndex++);
+                int endIndex = index;
+                while (endIndex < contentType.length() && contentType.charAt(endIndex) != ' ' &&
+                        contentType.charAt(endIndex) != ';') {
+                    endIndex++;
+                }
                 Log.d("RssChannelFetcher", contentType);
                 Log.d("RssChannelFetcher", contentType.substring(index, endIndex));
                 encoding = contentType.substring(index, endIndex);

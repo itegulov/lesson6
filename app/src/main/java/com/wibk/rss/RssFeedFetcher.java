@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class RssFeedFetcher extends AsyncTask<String, Void, RssFeed> {
+public class RssFeedFetcher extends AsyncTask<RssChannel, Void, RssChannel> {
     private RssItemAdapter adapter;
     private Context context;
     private String errorMessage;
@@ -29,8 +29,8 @@ public class RssFeedFetcher extends AsyncTask<String, Void, RssFeed> {
     }
 
     @Override
-    protected RssFeed doInBackground(String... strings) {
-        Uri uri = Uri.parse(strings[0]);
+    protected RssChannel doInBackground(RssChannel... channels) {
+        Uri uri = Uri.parse(channels[0].getLink());
         try {
             URL url = new URL(uri.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -41,10 +41,11 @@ public class RssFeedFetcher extends AsyncTask<String, Void, RssFeed> {
             String encoding = "utf-8";
             if (contentType.contains("charset=")) {
                 int index = contentType.indexOf("charset=") + "charset=".length();
-                int endIndex;
-                for (endIndex = index;
-                     endIndex < contentType.length() && contentType.charAt(endIndex) != ' ' &&
-                             contentType.charAt(endIndex) != ';'; endIndex++);
+                int endIndex = index;
+                while (endIndex < contentType.length() && contentType.charAt(endIndex) != ' ' &&
+                        contentType.charAt(endIndex) != ';') {
+                    endIndex++;
+                }
                 Log.d("RssFeedFetcher", contentType);
                 Log.d("RssFeedFetcher", contentType.substring(index, endIndex));
                 encoding = contentType.substring(index, endIndex);
@@ -53,7 +54,7 @@ public class RssFeedFetcher extends AsyncTask<String, Void, RssFeed> {
 
             InputSource is = new InputSource(reader);
             is.setEncoding(encoding);
-            return new RssFeed(is);
+            return new RssChannel(is);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             errorMessage = "Invalid URL";
@@ -68,7 +69,7 @@ public class RssFeedFetcher extends AsyncTask<String, Void, RssFeed> {
     }
 
     @Override
-    protected void onPostExecute(RssFeed rssFeed) {
+    protected void onPostExecute(RssChannel rssFeed) {
         if (rssFeed == null) {
             Toast toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT);
             toast.show();
