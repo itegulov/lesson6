@@ -1,16 +1,19 @@
 package com.wibk.rss;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 
-public class DatabaseRssHelper extends SQLiteOpenHelper {
+public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String DATABASE_NAME = "rss_fetcher_data";
     public static final int DATABASE_VERSION = 1;
 
     //Channels table
     public static final String CHANNELS_TABLE_NAME = "channels";
-    public static final String CHANNELS_KEY_ID = "_id";
+    public static final String CHANNELS_KEY_ID = _ID;
     public static final String CHANNELS_KEY_TITLE = "title";
     public static final String CHANNELS_KEY_DESCRIPTION = "description";
     public static final String CHANNELS_KEY_LINK = "link";
@@ -24,7 +27,7 @@ public class DatabaseRssHelper extends SQLiteOpenHelper {
 
     //Items table
     public static final String ITEMS_TABLE_NAME = "items";
-    public static final String ITEMS_KEY_ID = "_id";
+    public static final String ITEMS_KEY_ID = _ID;
     public static final String ITEMS_KEY_TITLE = "title";
     public static final String ITEMS_KEY_DESCRIPTION = "description";
     public static final String ITEMS_KEY_LINK = "link";
@@ -63,5 +66,19 @@ public class DatabaseRssHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("PRAGMA foreign_keys=ON");
+    }
+
+    public static class RssChannelCursor extends CursorWrapper {
+
+        public RssChannelCursor(Cursor cursor) {
+            super(cursor);
+        }
+
+        public static RssChannel getRssChannel(Cursor cursor) {
+            return new RssChannel(cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_LINK)),
+                    cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_DESCRIPTION)));
+        }
+
     }
 }

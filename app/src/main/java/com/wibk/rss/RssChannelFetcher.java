@@ -17,19 +17,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RssChannelFetcher extends AsyncTask<String, Void, RssChannel> {
-    private RssChannelAdapter adapter;
-    private Context context;
-    private String errorMessage;
+public class RssChannelFetcher {
 
-    public RssChannelFetcher(RssChannelAdapter adapter, Context context) {
-        this.adapter = adapter;
-        this.context = context;
-    }
-
-    @Override
-    protected RssChannel doInBackground(String... strings) {
-        Uri uri = Uri.parse(strings[0]);
+    public static RssChannel fetchRssChannel(String link) {
+        Uri uri = Uri.parse(link);
         try {
             URL url = new URL(uri.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -54,28 +45,15 @@ public class RssChannelFetcher extends AsyncTask<String, Void, RssChannel> {
             InputSource is = new InputSource(reader);
             is.setEncoding(encoding);
             RssChannel rssChannel = RssChannelSaxParser.parseInputSource(is);
-            rssChannel.setLink(strings[0]);
+            rssChannel.setLink(link);
             return rssChannel;
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            errorMessage = "Invalid URL";
         } catch (IOException e) {
             e.printStackTrace();
-            errorMessage = "No network connection";
         } catch (SAXException e) {
             e.printStackTrace();
-            errorMessage = "Couldn't parse RSS from web page";
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(RssChannel rssChannel) {
-        if (rssChannel == null) {
-            Toast toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            adapter.add(rssChannel);
-        }
     }
 }

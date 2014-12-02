@@ -20,7 +20,7 @@ public class RssActivity extends ListActivity {
         rssItemAdapter = new RssItemAdapter(getBaseContext(), this);
         listView.setAdapter(rssItemAdapter);
         String url = getIntent().getStringExtra(ChannelActivity.URL_EXTRA);
-        new RssFeedFetcher(rssItemAdapter, getBaseContext()).execute(url);
+        //new RssFeedFetcher(rssItemAdapter, getBaseContext()).execute(url);
     }
 
     public void onItemClick(int number) {

@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wibk.rss" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -27,6 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.wibk.rss.RssContentProvider"
+            android:authorities="com.wibk.rss.RssContentProvider"
+            android:enabled="true"
+            android:exported="true">
+        </provider>
+
+        <service android:name="com.wibk.rss.RssChannelFetchService"/>
     </application>
 
 </manifest>

@@ -22,7 +22,10 @@ public class RssChannelAdapter extends BaseAdapter {
 
     public void add(RssChannel rssChannel) {
         rssChannelList.add(rssChannel);
-        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        rssChannelList.clear();
     }
 
     @Override

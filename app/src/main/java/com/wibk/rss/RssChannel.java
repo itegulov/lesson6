@@ -1,5 +1,7 @@
 package com.wibk.rss;
 
+import android.content.ContentValues;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -54,5 +56,13 @@ public class RssChannel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseRssHelper.CHANNELS_KEY_LINK, link);
+        cv.put(DatabaseRssHelper.CHANNELS_KEY_DESCRIPTION, description);
+        cv.put(DatabaseRssHelper.CHANNELS_KEY_TITLE, title);
+        return cv;
     }
 }
