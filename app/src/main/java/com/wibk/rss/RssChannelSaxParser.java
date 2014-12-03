@@ -93,7 +93,7 @@ public class RssChannelSaxParser extends DefaultHandler {
             return;
         }
         if (NAME_TO_TAG.get(qName.toLowerCase()) == Tag.CHANNEL) {
-            rssChannel = new RssChannel(title, link, description, -1);
+            rssChannel = new RssChannel(title, link, description, 0, -1);
         }
         switch (NAME_TO_TAG.get(qName.toLowerCase())) {
             case ITEM:

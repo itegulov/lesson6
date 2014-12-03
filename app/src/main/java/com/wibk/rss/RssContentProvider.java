@@ -95,7 +95,8 @@ public class RssContentProvider extends ContentProvider {
         try {
             TableType tableType = TableType.values()[URI_MATCHER.match(uri)];
             SQLiteDatabase database = dbHelper.getWritableDatabase();
-            long id = -1;
+            long id = -12313345;
+
             switch (tableType) {
                 case CHANNEL:
                     //Do nothing?
@@ -154,7 +155,7 @@ public class RssContentProvider extends ContentProvider {
             SQLiteDatabase database = dbHelper.getWritableDatabase();
             int updated = 0;
             switch (tableType) {
-                case CHANNEL:
+                case CHANNELS:
                     updated = database.update(DatabaseRssHelper.CHANNELS_TABLE_NAME, values, selection, selectionArgs);
                     break;
                 case ITEM:
@@ -164,7 +165,7 @@ public class RssContentProvider extends ContentProvider {
                 case ITEMS:
                     updated = database.update(DatabaseRssHelper.ITEMS_TABLE_NAME, values, selection, selectionArgs);
                     break;
-                case CHANNELS:
+                case CHANNEL:
                     id = uri.getLastPathSegment();
                     updated = database.update(DatabaseRssHelper.CHANNELS_TABLE_NAME, values, DatabaseRssHelper.CHANNELS_KEY_ID + "=" + id + " and " + selection, selectionArgs);
                     break;

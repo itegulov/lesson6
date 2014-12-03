@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String DATABASE_NAME = "rss_fetcher_data";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 8;
 
     //Channels table
     public static final String CHANNELS_TABLE_NAME = "channels";
@@ -19,12 +19,14 @@ public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String CHANNELS_KEY_TITLE = "title";
     public static final String CHANNELS_KEY_DESCRIPTION = "description";
     public static final String CHANNELS_KEY_LINK = "link";
+    public static final String CHANNELS_KEY_LAST_UPDATE = "last_update";
 
     public static final String CHANNELS_TABLE_CREATE_REQUEST = "CREATE TABLE " + CHANNELS_TABLE_NAME + " (" +
             CHANNELS_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             CHANNELS_KEY_TITLE + " TEXT, " +
             CHANNELS_KEY_DESCRIPTION + " TEXT, " +
-            CHANNELS_KEY_LINK + " TEXT)";
+            CHANNELS_KEY_LINK + " TEXT, " +
+            CHANNELS_KEY_LAST_UPDATE + " INTEGER)";
 
 
     //Items table
@@ -42,10 +44,7 @@ public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
             ITEMS_KEY_DESCRIPTION + " TEXT, " +
             ITEMS_KEY_LINK + " TEXT, " +
             ITEMS_KEY_DATE + " INTEGER, " +
-            ITEMS_CHANNEL_ID + " INTEGER, " +
-            "FOREIGN KEY (" + ITEMS_CHANNEL_ID + ") REFERENCES " +
-            CHANNELS_TABLE_NAME + "(" + CHANNELS_KEY_ID + ") ON DELETE CASCADE, " +
-            "UNIQUE (" + ITEMS_KEY_LINK + ") ON CONFLICT IGNORE)";
+            ITEMS_CHANNEL_ID + " INTEGER)";
 
 
     public DatabaseRssHelper(Context context) {
@@ -80,6 +79,7 @@ public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
             return new RssChannel(cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_TITLE)),
                     cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_LINK)),
                     cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_DESCRIPTION)),
+                    cursor.getLong(cursor.getColumnIndex(CHANNELS_KEY_LAST_UPDATE)),
                     cursor.getLong(cursor.getColumnIndex(CHANNELS_KEY_ID)));
         }
 

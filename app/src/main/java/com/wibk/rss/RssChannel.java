@@ -12,6 +12,7 @@ public class RssChannel {
     private String title;
     private String link;
     private String description;
+    private long lastUpdate;
     private long id = -1;
     private final List<RssItem> rssItemList;
 
@@ -27,10 +28,11 @@ public class RssChannel {
         rssItemList = new ArrayList<RssItem>();
     }
 
-    public RssChannel(String title, String link, String description, long id) {
+    public RssChannel(String title, String link, String description, long lastUpdate, long id) {
         this.title = title;
         this.link = link;
         this.description = description;
+        this.lastUpdate = lastUpdate;
         this.id = id;
         rssItemList = new ArrayList<RssItem>();
     }
@@ -51,6 +53,14 @@ public class RssChannel {
         return description;
     }
 
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(long lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     public long getId() {
         return id;
     }
@@ -64,6 +74,7 @@ public class RssChannel {
         cv.put(DatabaseRssHelper.CHANNELS_KEY_LINK, link);
         cv.put(DatabaseRssHelper.CHANNELS_KEY_DESCRIPTION, description);
         cv.put(DatabaseRssHelper.CHANNELS_KEY_TITLE, title);
+        cv.put(DatabaseRssHelper.CHANNELS_KEY_LAST_UPDATE, lastUpdate);
         return cv;
     }
 }

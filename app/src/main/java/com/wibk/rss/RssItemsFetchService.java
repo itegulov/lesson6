@@ -4,10 +4,15 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 
+import java.util.Date;
+
 public class RssItemsFetchService extends IntentService {
+    private static final long UPDATE_INTERVAL = 60L * 1000L;
     private static Handler handler;
     public static final String LINK_EXTRA = "link";
     public static final String ID_EXTRA = "channel_id";
@@ -32,13 +37,23 @@ public class RssItemsFetchService extends IntentService {
         Log.d("RssItemsFetchService", "Loading " + intent.toString());
         String link = intent.getStringExtra(LINK_EXTRA);
         long id = intent.getLongExtra(ID_EXTRA, -1);
-        if (id == -1) {
+        Cursor cursor = getContentResolver().query(RssContentProvider.CONTENT_URI_FEEDS, null,
+                DatabaseRssHelper.CHANNELS_KEY_ID + " = " + id, null, null);
+        cursor.moveToNext();
+        if (cursor.isAfterLast()) {
             if (handler != null) {
                 handler.obtainMessage(ERROR).sendToTarget();
             }
             return;
         }
+        RssChannel channel = DatabaseRssHelper.RssChannelCursor.getRssChannel(cursor);
 
+        if (!needsUpdate(channel)) {
+            return;
+        }
+        channel.setLastUpdate(new Date().getTime());
+        getContentResolver().update(RssContentProvider.CONTENT_URI_FEEDS, channel.getContentValues(),
+                DatabaseRssHelper.CHANNELS_KEY_ID + " = " + id, null);
         if (handler != null) {
             handler.obtainMessage(UPDATING).sendToTarget();
         }
@@ -54,17 +69,22 @@ public class RssItemsFetchService extends IntentService {
         }
     }
 
+    private boolean needsUpdate(RssChannel rssChannel) {
+        return new Date().getTime() - rssChannel.getLastUpdate() > UPDATE_INTERVAL;
+    }
+
     private boolean update(RssChannel rssChannel, long id) {
         if (rssChannel == null) {
             return false;
         }
         getContentResolver().delete(RssContentProvider.CONTENT_URI_POSTS,
-                DatabaseRssHelper.ITEMS_CHANNEL_ID + " = " + id + "", null);
+                DatabaseRssHelper.ITEMS_CHANNEL_ID + " = " + id, null);
         for (RssItem rssItem : rssChannel.getRssItemList()) {
-            Log.d("RssItemsFetchService", "Updating " + rssItem.toString());
+            Log.d("RssItemsFetchService", "Updating " + rssItem.toString() + " " + id);
             ContentValues cv = rssItem.getContentValues();
             cv.put(DatabaseRssHelper.ITEMS_CHANNEL_ID, id);
-            getContentResolver().insert(RssContentProvider.CONTENT_URI_POSTS, cv);
+            Uri uri = getContentResolver().insert(RssContentProvider.CONTENT_URI_POSTS, cv);
+            Log.d("RssItemsFetchService", "Inserted " + uri);
         }
         return true;
     }

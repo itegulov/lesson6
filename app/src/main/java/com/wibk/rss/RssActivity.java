@@ -58,6 +58,7 @@ public class RssActivity extends ListActivity
             }
         });
         beginLoading();
+        getLoaderManager().restartLoader(394723, null, RssActivity.this);
     }
 
     public void beginLoading() {
@@ -97,6 +98,7 @@ public class RssActivity extends ListActivity
         }
         rssItemAdapter.clear();
         for (RssItem rssItem : itemList) {
+            Log.d("RssActivity", "Add: " + rssItem.toString() + " " + id);
             rssItemAdapter.add(rssItem);
         }
         rssItemAdapter.notifyDataSetChanged();
