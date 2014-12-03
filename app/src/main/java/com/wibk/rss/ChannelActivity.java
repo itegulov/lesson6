@@ -29,6 +29,7 @@ public class ChannelActivity extends ListActivity
     private List<RssChannel> channelList = new ArrayList<RssChannel>();
     private Handler handler;
     public final static String URL_EXTRA = "url";
+    public static final String ID_EXTRA = "channel_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class ChannelActivity extends ListActivity
                 RssChannelAdapter rssChannelAdapter = (RssChannelAdapter) channelListView.getAdapter();
                 RssChannel rssChannel = rssChannelAdapter.getItem(i);
                 intent.putExtra(URL_EXTRA, rssChannel.getLink());
+                intent.putExtra(ID_EXTRA, rssChannel.getId());
                 startActivity(intent);
             }
         });
@@ -66,6 +68,7 @@ public class ChannelActivity extends ListActivity
                 return true;
             }
         });
+        getLoaderManager().restartLoader(127326, null, ChannelActivity.this);
     }
 
     public void beginLoading(String link) {
@@ -86,6 +89,7 @@ public class ChannelActivity extends ListActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        Log.d("ChannelActivity", "onCreateLoader");
         return new CursorLoader(this, RssContentProvider.CONTENT_URI_FEEDS, null, null, null, null);
     }
 

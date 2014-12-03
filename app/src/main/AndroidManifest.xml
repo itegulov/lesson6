@@ -37,6 +37,7 @@
         </provider>
 
         <service android:name="com.wibk.rss.RssChannelFetchService"/>
+        <service android:name="com.wibk.rss.RssItemsFetchService"/>
     </application>
 
 </manifest>

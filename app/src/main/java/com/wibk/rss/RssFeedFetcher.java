@@ -18,19 +18,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class RssFeedFetcher extends AsyncTask<RssChannel, Void, RssChannel> {
-    private RssItemAdapter adapter;
-    private Context context;
-    private String errorMessage;
+public class RssFeedFetcher {
 
-    public RssFeedFetcher(RssItemAdapter adapter, Context context) {
-        this.adapter = adapter;
-        this.context = context;
-    }
-
-    @Override
-    protected RssChannel doInBackground(RssChannel... channels) {
-        Uri uri = Uri.parse(channels[0].getLink());
+    public static RssChannel fetchRssFeed(String link) {
+        Uri uri = Uri.parse(link);
         try {
             URL url = new URL(uri.toString());
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -57,28 +48,11 @@ public class RssFeedFetcher extends AsyncTask<RssChannel, Void, RssChannel> {
             return new RssChannel(is);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            errorMessage = "Invalid URL";
         } catch (IOException e) {
             e.printStackTrace();
-            errorMessage = "No network connection";
         } catch (SAXException e) {
             e.printStackTrace();
-            errorMessage = "Couldn't parse RSS from web page";
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(RssChannel rssFeed) {
-        if (rssFeed == null) {
-            Toast toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            List<RssItem> rssItems = rssFeed.getRssItemList();
-            for (RssItem rssItem : rssItems) {
-                adapter.add(rssItem);
-            }
-            adapter.notifyDataSetChanged();
-        }
     }
 }

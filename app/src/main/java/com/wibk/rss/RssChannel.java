@@ -27,10 +27,11 @@ public class RssChannel {
         rssItemList = new ArrayList<RssItem>();
     }
 
-    public RssChannel(String title, String link, String description) {
+    public RssChannel(String title, String link, String description, long id) {
         this.title = title;
         this.link = link;
         this.description = description;
+        this.id = id;
         rssItemList = new ArrayList<RssItem>();
     }
 

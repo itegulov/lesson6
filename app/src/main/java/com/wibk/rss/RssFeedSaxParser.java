@@ -62,6 +62,7 @@ public class RssFeedSaxParser extends DefaultHandler {
     private boolean bDate = false;
     private boolean bItem = false;
     private boolean bLink = false;
+    private String dateString = "";
 
     private RssItem rssItem;
 
@@ -89,6 +90,7 @@ public class RssFeedSaxParser extends DefaultHandler {
                     break;
                 case DATE:
                     bDate = true;
+                    dateString = "";
                     break;
                 case LINK:
                     bLink = true;
@@ -121,6 +123,7 @@ public class RssFeedSaxParser extends DefaultHandler {
                     bTitle = false;
                     break;
                 case DATE:
+                    rssItem.setDate(dateString);
                     bDate = false;
                     break;
                 case LINK:
@@ -138,7 +141,7 @@ public class RssFeedSaxParser extends DefaultHandler {
         } else if (bDescription) {
             rssItem.setDescription((rssItem.getDescription() == null ? "" : rssItem.getDescription()) + new String(ch, start, length));
         } else if (bDate) {
-            rssItem.setDate(new String(ch, start, length));
+            dateString += new String(ch, start, length);
         } else if (bLink) {
             rssItem.setLink(new String(ch, start, length));
         }

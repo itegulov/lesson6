@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import java.util.Date;
+
 public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
     public static final String DATABASE_NAME = "rss_fetcher_data";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     //Channels table
     public static final String CHANNELS_TABLE_NAME = "channels";
@@ -77,7 +79,23 @@ public class DatabaseRssHelper extends SQLiteOpenHelper implements BaseColumns {
         public static RssChannel getRssChannel(Cursor cursor) {
             return new RssChannel(cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_TITLE)),
                     cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_LINK)),
-                    cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_DESCRIPTION)));
+                    cursor.getString(cursor.getColumnIndex(CHANNELS_KEY_DESCRIPTION)),
+                    cursor.getLong(cursor.getColumnIndex(CHANNELS_KEY_ID)));
+        }
+
+    }
+
+    public static class RssItemCursor extends CursorWrapper {
+
+        public RssItemCursor(Cursor cursor) {
+            super(cursor);
+        }
+
+        public static RssItem getRssItem(Cursor cursor) {
+            return new RssItem(cursor.getString(cursor.getColumnIndex(ITEMS_KEY_TITLE)),
+                    cursor.getString(cursor.getColumnIndex(ITEMS_KEY_DESCRIPTION)),
+                    new Date(cursor.getLong(cursor.getColumnIndex(ITEMS_KEY_DATE))),
+                    cursor.getString(cursor.getColumnIndex(ITEMS_KEY_LINK)));
         }
 
     }

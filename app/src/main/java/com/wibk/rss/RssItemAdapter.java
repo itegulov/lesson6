@@ -30,6 +30,10 @@ public class RssItemAdapter extends BaseAdapter implements View.OnClickListener 
         rssItemList.add(item);
     }
 
+    public void clear() {
+        rssItemList.clear();
+    }
+
     @Override
     public int getCount() {
         return rssItemList.size();
