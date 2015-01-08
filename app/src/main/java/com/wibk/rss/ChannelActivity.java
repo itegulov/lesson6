@@ -49,6 +49,16 @@ public class ChannelActivity extends ListActivity
             }
         });
 
+        channelListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                RssChannelAdapter rssChannelAdapter = (RssChannelAdapter) channelListView.getAdapter();
+                getContentResolver().delete(RssContentProvider.CONTENT_URI_FEEDS, DatabaseRssHelper.CHANNELS_KEY_ID + " = " + rssChannelAdapter.getItem(position).getId(), null);
+                rssChannelAdapter.remove(position);
+                return true;
+            }
+        });
+
         handler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message message) {

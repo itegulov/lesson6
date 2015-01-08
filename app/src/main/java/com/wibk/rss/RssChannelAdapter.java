@@ -28,6 +28,10 @@ public class RssChannelAdapter extends BaseAdapter {
         rssChannelList.clear();
     }
 
+    public void remove(int pos) {
+        rssChannelList.remove(pos);
+    }
+
     @Override
     public int getCount() {
         return rssChannelList.size();
